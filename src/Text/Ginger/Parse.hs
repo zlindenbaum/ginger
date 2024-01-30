@@ -627,7 +627,7 @@ switchStmtP = do
     pos <- getPosition
     pivotExpr <- try $ fancyTagP "switch" expressionP
     optional spacesOrComment
-    cases <- many (switchCaseP >> optional spacesOrComment)
+    cases <- many (switchCaseP <* optional spacesOrComment)
     def <- switchDefaultP <|> (NullS <$> getPosition)
     optional spacesOrComment
     simpleTagP "endswitch"
