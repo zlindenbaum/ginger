@@ -626,8 +626,10 @@ switchStmtP :: Monad m => Parser m (Statement SourcePos)
 switchStmtP = do
     pos <- getPosition
     pivotExpr <- try $ fancyTagP "switch" expressionP
-    cases <- many switchCaseP
+    optional spacesOrComment
+    cases <- many (switchCaseP >> optional spacesOrComment)
     def <- switchDefaultP <|> (NullS <$> getPosition)
+    optional spacesOrComment
     simpleTagP "endswitch"
     return $ SwitchS pos pivotExpr cases def
 
